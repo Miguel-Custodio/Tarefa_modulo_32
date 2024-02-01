@@ -1,23 +1,25 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import * as S from './styles'
-import { remover, editar, alteraStatus } from '../../store/reducers/tarefas'
-import TarefaClass from '../../models/Tarefa'
+import { remover, editar } from '../../store/reducers/contatos'
+import ContatoClass from '../../models/Contato'
 import { Botao, BotaoSalvar } from '../../styles'
-import * as enums from '../../utils/enums/Tarefa'
 
-type Props = TarefaClass
+type Props = ContatoClass
 
-const Tarefa = ({
-  descricao: descricaoOriginal,
-  prioridade,
-  status,
-  titulo,
+const Contato = ({
+  nome: descricaoOriginal,
+  nome,
+  telefone,
+  email,
   id
 }: Props) => {
   const dispatch = useDispatch()
   const [estaEditando, setEstaEditando] = useState(false)
-  const [descricao, setDescricao] = useState('')
+  const [novoNome, setNovoNome] = useState(nome)
+  const [novoTelefone, setNovoTelefone] = useState(telefone)
+  const [novoEmail, setNovoEmail] = useState(email)
+  const [, setDescricao] = useState('')
 
   useEffect(() => {
     if (descricaoOriginal.length > 0) {
@@ -25,40 +27,37 @@ const Tarefa = ({
     }
   }, [descricaoOriginal])
 
-  function alteraStatusTarefa(evento: ChangeEvent<HTMLInputElement>) {
-    console.log(evento.target.checked)
-    dispatch(
-      alteraStatus({
-        id,
-        finalizado: evento.target.checked
-      })
-    )
-  }
-
   return (
     <S.Card>
-      <label htmlFor={titulo}>
+      <label htmlFor={nome}>
         <input
           type="checkbox"
-          id={titulo}
-          checked={status === enums.Status.CONCLUIDA}
-          onChange={alteraStatusTarefa}
+          id={nome}
+          checked={nome === nome}
+          onChange={() => setEstaEditando(!estaEditando)}
         />
         <S.Titulo>
           {estaEditando && <em>Editando: </em>}
-          {titulo}
+          {novoNome}
         </S.Titulo>
       </label>
-      <S.Tag parametro="prioridade" prioridade={prioridade}>
-        {prioridade}
-      </S.Tag>
-      <S.Tag parametro="status" status={status}>
-        {status}
-      </S.Tag>
+      <S.Tag criterio="nome">{novoNome}</S.Tag>
+      <S.Tag criterio="telefone">{novoTelefone}</S.Tag>
+      <S.Tag criterio="email">{novoEmail}</S.Tag>
       <S.Descricao
         disabled={!estaEditando}
-        value={descricao}
-        onChange={(evento) => setDescricao(evento.target.value)}
+        value={novoNome}
+        onChange={(evento) => setNovoNome(evento.target.value)}
+      />
+      <S.Descricao
+        disabled={!estaEditando}
+        value={novoTelefone}
+        onChange={(evento) => setNovoTelefone(evento.target.value)}
+      />
+      <S.Descricao
+        disabled={!estaEditando}
+        value={novoEmail}
+        onChange={(evento) => setNovoEmail(evento.target.value)}
       />
       <S.BarraAcoes>
         {estaEditando ? (
@@ -67,13 +66,13 @@ const Tarefa = ({
               onClick={() => {
                 dispatch(
                   editar({
-                    descricao,
-                    prioridade,
-                    status,
-                    titulo,
+                    nome: novoNome,
+                    email: novoEmail,
+                    telefone: novoTelefone,
                     id
                   })
                 )
+                setEstaEditando(false)
               }}
             >
               Salvar
@@ -95,4 +94,4 @@ const Tarefa = ({
   )
 }
 
-export default Tarefa
+export default Contato

@@ -1,6 +1,6 @@
 import BotaoAdicionar from '../../components/BotaoAdicionar'
 import BarraLateral from '../../container/BarraLateral'
-import ListaDeTarefas from '../../container/ListadeTarefas'
+import ListaDeTarefas from '../../container/ListaDeContatos'
 
 const Home = () => (
   <>

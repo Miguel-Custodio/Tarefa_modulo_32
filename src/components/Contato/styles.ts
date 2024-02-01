@@ -1,22 +1,20 @@
 import styled from 'styled-components'
 import variaveis from '../../styles/variaveis'
-import * as enums from '../../utils/enums/Tarefa'
 import { Botao } from '../../styles'
+import Contato from '../../models/Contato'
 
 type TagProps = {
-  prioridade?: enums.Prioridade
-  status?: enums.Status
-  parametro: 'status' | 'prioridade'
+  contato?: Contato
+  criterio: 'nome' | 'telefone' | 'email' | 'todas'
 }
 
 function retornaCorDeFundo(props: TagProps): string {
-  if (props.parametro === 'prioridade') {
-    if (props.prioridade === enums.Prioridade.URGENTE) return variaveis.vermelho
-    if (props.prioridade === enums.Prioridade.IMPORTANTE)
-      return variaveis.amarelo2
+  if (props.criterio === 'todas') {
+    if (props.criterio === 'todas') return variaveis.azulEscuro
   } else {
-    if (props.status === enums.Status.PENDENTE) return variaveis.amarelo
-    if (props.status === enums.Status.CONCLUIDA) return variaveis.verde
+    if (props.criterio === 'telefone') return variaveis.amarelo
+    if (props.criterio === 'email') return variaveis.verde
+    if (props.criterio === 'nome') return variaveis.vermelho
   }
 
   return '#ccc'
